@@ -1,24 +1,30 @@
 var lastActive = workspace.activeClient;
 function raiseOnActivation(client) {
-    if (client == null) {  // sometimes client is null ¯\_(ツ)_/¯
+    try {
+        if (client == null) {  // sometimes client is null ¯\_(ツ)_/¯
+            return;
+        }
+
+        print("Reached Activation: " + client.resourceName);
+
+        var openClients = workspace.clientList();
+        for (var i = 0; i < openClients.length; i++) {
+            if (openClients[i].windowId == client.windowId) {
+                //print(openClients[i].resourceName + " set above");
+                openClients[i].keepAbove = true;
+                lastActive = openClients[i];
+
+            } else {
+                // print(openClients[i].resourceName + " unset above");
+                openClients[i].keepAbove = false;
+            }
+        }
+        openClients = null;
+    } catch (e) {
+        // somtimes the script will run into an error and quit, if that happens return so that the script keeps running
         return;
     }
 
-    print("Reached Activation: " + client.resourceName);
-
-    var openClients = workspace.clientList();
-    for (var i = 0; i < openClients.length; i++) {
-        if (openClients[i].windowId == client.windowId) {
-            //print(openClients[i].resourceName + " set above");
-            openClients[i].keepAbove = true;
-            lastActive = openClients[i];
-
-        } else {
-            // print(openClients[i].resourceName + " unset above");
-            openClients[i].keepAbove = false;
-        }
-    }
-    openClients = null;
 }
 
 function raiseOnAdd(client) {
@@ -35,8 +41,6 @@ function raiseOnAdd(client) {
         //print("active client: " + client.resourceName);
         client.keepAbove = true;
     }
-
-
 }
 
 function unsetKeepAbove(client) {
