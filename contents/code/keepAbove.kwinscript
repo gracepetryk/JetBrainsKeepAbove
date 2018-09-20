@@ -25,18 +25,23 @@ function raiseOnAdd(client) {
     if (client == null) { // sometimes client is null ¯\_(ツ)_/¯
         return;
     }
-    print("Adding Client: " + client.resourceName);
-    print("Active Client: " + client.resourceName);
-    print("Last Active Cleint: " + lastActive.resourceName);
-    lastActive.keepAbove = false;
-    //print(client.windowId);
-    if (client.resourceName == "sun-awt-x11-xdialogpeer" ||
-        client.resourceName == "sun-awt-x11-xframepeer")
-    {
-        print(client.active);
-        //print("reached target: " + client.resourceName);
-        //print("active client: " + client.resourceName);
-        client.keepAbove = true;
+    try {
+        print("Adding Client: " + client.resourceName);
+        print("Active Client: " + client.resourceName);
+        print("Last Active Cleint: " + lastActive.resourceName);
+        lastActive.keepAbove = false;
+        //print(client.windowId);
+        if (client.resourceName == "sun-awt-x11-xdialogpeer" ||
+            client.resourceName == "sun-awt-x11-xframepeer")
+        {
+            print(client.active);
+            //print("reached target: " + client.resourceName);
+            //print("active client: " + client.resourceName);
+            client.keepAbove = true;
+        }
+    } catch (e) {
+        print(e);
+        return;
     }
 }
 
