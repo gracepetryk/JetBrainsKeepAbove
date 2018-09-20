@@ -1,42 +1,39 @@
 var lastActive = workspace.activeClient;
 function raiseOnActivation(client) {
-    try {
-        if (client == null) {  // sometimes client is null ¯\_(ツ)_/¯
-            return;
-        }
-
-        print("Reached Activation: " + client.resourceName);
-
-        var openClients = workspace.clientList();
-        for (var i = 0; i < openClients.length; i++) {
-            if (openClients[i].windowId == client.windowId) {
-                //print(openClients[i].resourceName + " set above");
-                openClients[i].keepAbove = true;
-                lastActive = openClients[i];
-
-            } else {
-                // print(openClients[i].resourceName + " unset above");
-                openClients[i].keepAbove = false;
-            }
-        }
-        openClients = null;
-    } catch (e) {
-        // somtimes the script will run into an error and quit, if that happens return so that the script keeps running
+    if (client == null) {  // sometimes client is null ¯\_(ツ)_/¯
         return;
     }
 
+    print("Reached Activation: " + client.resourceName);
+
+    var openClients = workspace.clientList();
+    for (var i = 0; i < openClients.length; i++) {
+        if (openClients[i].windowId == client.windowId) {
+            //print(openClients[i].resourceName + " set above");
+            openClients[i].keepAbove = true;
+            lastActive = openClients[i];
+
+        } else {
+            // print(openClients[i].resourceName + " unset above");
+            openClients[i].keepAbove = false;
+        }
+    }
+    openClients = null;
 }
 
 function raiseOnAdd(client) {
-    // print("Adding Client: " + client.resourceName);
-    // print("Active Client: " + client.resourceName);
-    // print("Last Active Cleint: " + lastActive.resourceName);
+    if (client == null) { // sometimes client is null ¯\_(ツ)_/¯
+        return;
+    }
+    print("Adding Client: " + client.resourceName);
+    print("Active Client: " + client.resourceName);
+    print("Last Active Cleint: " + lastActive.resourceName);
     lastActive.keepAbove = false;
     //print(client.windowId);
     if (client.resourceName == "sun-awt-x11-xdialogpeer" ||
         client.resourceName == "sun-awt-x11-xframepeer")
     {
-        // print(client.active);
+        print(client.active);
         //print("reached target: " + client.resourceName);
         //print("active client: " + client.resourceName);
         client.keepAbove = true;
